@@ -1,10 +1,10 @@
 {
   "date": "2026-06-26",
-  "started_at": "2026-06-26T10:14:34.434Z",
-  "finished_at": "2026-06-26T10:15:17.281Z",
-  "total_written": 0,
+  "started_at": "2026-06-26T13:26:46.244Z",
+  "finished_at": "2026-06-26T13:27:18.216Z",
+  "total_written": 1,
   "total_skipped_dup": 0,
-  "total_tokens": 0,
+  "total_tokens": 7536,
   "budget_exceeded": false,
   "sources": [
     {
@@ -16,110 +16,9 @@
     {
       "source": "Hacker News",
       "items_fetched": 30,
-      "items_written": 0,
-      "translated": 0
+      "items_written": 1,
+      "translated": 1
     }
   ],
-  "failures": [
-    {
-      "url": "https://akrites.org/letter/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://om.co/2026/06/24/1966-2026/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://scrollprize.org/firstscroll",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://graphicore.github.io/librebarcode/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://www.jeffgeerling.com/blog/2026/framework-10g-ethernet-module-usb-c-complexity/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://www.fernandoi.cl/posts/hackmyclaw/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://blog.matthewbrunelle.com/my-steam-machine-is-a-50ft-hdmi-cable/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://expression.fire.org/p/the-papers-please-era-of-the-internet",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://gchandbook.org/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://github.com/plbrault/youre-the-os",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://explorer.oxide.computer/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://newsroom.ibm.com/2026-06-25-ibm-debuts-worlds-first-sub-1-nanometer-chip-technology",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://jan-herlyn.com/blog/doing-a-masters-while-working/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://unconv.ai/blog/introducing-un-0-generating-images-with-coupled-oscillators/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://github.com/inkeep/open-knowledge",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://princechazz.com",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://worksinprogress.co/issue/microbubbles/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://calpaterson.com/bank-python.html",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://twitter.com/mfts0/status/2070080422482977095",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    }
-  ]
+  "failures": []
 }
