@@ -1,6 +1,6 @@
 import type { LlmGateway, ChatMessage } from './llm';
 
-const CHUNK_WORDS = 1500;
+const CHUNK_WORDS = 500;
 
 function chunkByParagraphs(text: string, maxWords: number): string[] {
   const paragraphs = text
