@@ -8,33 +8,40 @@ sources:
     url: https://www.ruanyifeng.com/blog/atom.xml
     type: rss
     lang: zh
+    max_items: 10
 
   - name: Julia Evans
     url: https://jvns.ca/atom.xml
     type: rss
     lang: en
+    max_items: 10
 
   - name: Martin Fowler
     url: https://martinfowler.com/feed.atom
     type: rss
     lang: en
+    max_items: 10
 
   - name: Dan Luu
     url: https://danluu.com/atom.xml
     type: rss
     lang: en
+    max_items: 10
 
   - name: Sebastian Raschka
     url: https://sebastianraschka.com/rss_feed.xml
     type: rss
     lang: en
+    max_items: 10
 
   - name: OpenAI Blog
     url: https://openai.com/blog/rss.xml
     type: rss
     lang: en
+    max_items: 10
 
   - name: Hugging Face Blog
     url: https://huggingface.co/blog/feed.xml
     type: rss
     lang: en
+    max_items: 10
