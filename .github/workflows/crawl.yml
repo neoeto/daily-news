@@ -32,6 +32,21 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: test LLM endpoint
+        env:
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_TRANSLATE_MODEL: ${{ secrets.LLM_TRANSLATE_MODEL }}
+        run: |
+          echo "base_url: ${LLM_BASE_URL}"
+          echo "model: ${LLM_TRANSLATE_MODEL:-glm-4.5} (default if empty)"
+          curl -s -w "\nHTTP %{http_code}\n" \
+            "${LLM_BASE_URL}/chat/completions" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${LLM_API_KEY}" \
+            -d "{\"model\":\"${LLM_TRANSLATE_MODEL:-glm-4.5}\",\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}" \
+            | head -20
+
       - name: run crawler
         run: pnpm crawl
 
