@@ -62,6 +62,13 @@ export const sourceSchema = z.object({
   /** Declared language of this source's content (drives translate-skip). */
   lang: langCodeSchema,
   selectors: selectorsSchema.optional(),
+  /**
+   * Max NEW articles to process per run for this source (counted after
+   * url_hash dedup, before entering the fetch→extract→translate→tag pipeline).
+   * Omit = unlimited. Remaining candidates are deferred to the next run
+   * (their url_hash is never written until actually processed).
+   */
+  max_items: z.number().int().positive().optional(),
 });
 export type Source = z.infer<typeof sourceSchema>;
 

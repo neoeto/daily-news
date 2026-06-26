@@ -47,6 +47,8 @@ async function main(): Promise<void> {
     let fetched = 0;
     let written = 0;
     let translatedCount = 0;
+    let attempted = 0;
+    let capped = false;
     let sourceError: string | undefined;
 
     try {
@@ -73,6 +75,11 @@ async function main(): Promise<void> {
         totalSkippedDup++;
         continue;
       }
+      if (source.max_items !== undefined && attempted >= source.max_items) {
+        capped = true;
+        break;
+      }
+      attempted++;
 
       try {
         let bodyHtml = item.contentHtml ?? '';
@@ -168,6 +175,10 @@ async function main(): Promise<void> {
         failures.push({ url: item.url, stage: 'write', error: msg });
         console.warn(`[crawl] item failed (${item.url}): ${msg}`);
       }
+    }
+
+    if (capped) {
+      console.log(`[crawl] ${source.name}: hit max_items=${source.max_items} cap`);
     }
 
     sourceResults.push({

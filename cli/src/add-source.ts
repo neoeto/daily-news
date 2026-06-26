@@ -164,6 +164,15 @@ async function main(): Promise<void> {
   }
 
   const entryUrl = type === 'rss' ? feedUrl : res.finalUrl;
+
+  const maxItemsInput = (await ask('\n每次运行最多处理几篇新文章?(留空=不限) ')).trim();
+  let maxItems: number | undefined;
+  if (maxItemsInput) {
+    const n = Number(maxItemsInput);
+    if (Number.isInteger(n) && n > 0) maxItems = n;
+    else console.log('  ⚠ 无效,已忽略(需为正整数)');
+  }
+
   let entry: Source;
   if (!readabilityOk && type === 'html') {
     const sel = (await ask('\n正文提取为空/过短,指定 body CSS 选择器?(留空跳过) ')).trim();
@@ -173,6 +182,7 @@ async function main(): Promise<void> {
       type,
       lang,
       ...(sel ? { selectors: { body: sel } } : {}),
+      ...(maxItems ? { max_items: maxItems } : {}),
     };
   } else {
     entry = {
@@ -180,6 +190,7 @@ async function main(): Promise<void> {
       url: entryUrl,
       type,
       lang,
+      ...(maxItems ? { max_items: maxItems } : {}),
     };
   }
   sourceSchema.parse(entry);

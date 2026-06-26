@@ -1,5 +1,8 @@
 target_lang: zh
 
+# Each source may set `max_items: N` to cap how many NEW articles (after
+# url_hash dedup) are processed per run. Omit = unlimited. Deferred items
+# stay in the feed window and are picked up by the next run.
 sources:
   - name: 阮一峰的网络日志
     url: https://www.ruanyifeng.com/blog/atom.xml
@@ -10,3 +13,4 @@ sources:
     url: https://news.ycombinator.com/rss
     type: rss
     lang: en
+    max_items: 20
