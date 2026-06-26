@@ -26,13 +26,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: switch to output branch (merge main code changes)
+      - name: switch to output branch
         run: |
-          git config user.name "daily-news-bot"
-          git config user.email "bot@users.noreply.github.com"
           if git show-ref --verify --quiet "refs/remotes/origin/${OUTPUT_BRANCH}"; then
             git checkout -B "${OUTPUT_BRANCH}" "origin/${OUTPUT_BRANCH}"
-            git merge "origin/main" --no-edit
           else
             git checkout -b "${OUTPUT_BRANCH}"
           fi
