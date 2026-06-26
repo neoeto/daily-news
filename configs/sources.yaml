@@ -1,0 +1,12 @@
+target_lang: zh
+
+sources:
+  - name: 阮一峰的网络日志
+    url: https://www.ruanyifeng.com/blog/atom.xml
+    type: rss
+    lang: zh
+
+  - name: Hacker News
+    url: https://news.ycombinator.com/rss
+    type: rss
+    lang: en

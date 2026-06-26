@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@daily-news/shared": ["./shared/src/index.ts"],
+      "@daily-news/shared/*": ["./shared/src/*"],
+      "@daily-news/crawler": ["./crawler/src/index.ts"],
+      "@daily-news/crawler/*": ["./crawler/src/*"]
+    }
+  },
+  "include": ["shared/src", "crawler/src", "crawler/test", "cli/src", "cli/test", "*.ts"]
+}

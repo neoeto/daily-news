@@ -1,0 +1,15 @@
+{
+  "name": "@daily-news/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "add-source": "./src/add-source.ts"
+  },
+  "dependencies": {
+    "@daily-news/crawler": "workspace:*",
+    "@daily-news/shared": "workspace:*",
+    "franc": "^6.2.0",
+    "yaml": "^2.6.1"
+  }
+}

@@ -1,0 +1,51 @@
+---
+const hasPagefind = import.meta.env.PROD;
+---
+
+{hasPagefind && (
+  <div class="search">
+    <input id="search" type="search" placeholder="搜索文章…" autocomplete="off" />
+    <div id="search-results"></div>
+  </div>
+)}
+
+<script is:inline>
+  const input = document.getElementById('search');
+  const out = document.getElementById('search-results');
+  if (input && out) {
+    let pagefind;
+    const load = async () => {
+      if (!pagefind) {
+        try {
+          pagefind = await import('/pagefind/pagefind.js');
+          await pagefind.init();
+        } catch {
+          input.disabled = true;
+          input.placeholder = '搜索索引加载失败';
+        }
+      }
+      return pagefind;
+    };
+    let timer;
+    const run = (q) => {
+      clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const pf = await load();
+        if (!pf || !q.trim()) {
+          out.innerHTML = '';
+          return;
+        }
+        const res = await pf.search(q);
+        const items = await Promise.all(res.results.slice(0, 10).map((r) => r.data()));
+        out.innerHTML = items
+          .map(
+            (i) =>
+              `<div><a href="${i.url}">${i.meta?.title ?? i.url}</a></div>`,
+          )
+          .join('');
+      }, 150);
+    };
+    input.addEventListener('input', (e) => run(e.target.value));
+    input.addEventListener('focus', load);
+  }
+</script>

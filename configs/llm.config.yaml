@@ -1,0 +1,15 @@
+llm:
+  base_url: ${LLM_BASE_URL}
+  api_key: ${LLM_API_KEY}
+  request:
+    timeout: 60000
+    max_retries: 3
+  translate:
+    model: glm-4.5
+    temperature: 0.3
+  tag:
+    model: glm-4.5-flash
+    temperature: 0.2
+    max_tags: 5
+  guardrails:
+    max_tokens_per_run: 500000

@@ -1,0 +1,25 @@
+{
+  "date": "2026-06-26",
+  "started_at": "2026-06-26T06:31:03.556Z",
+  "finished_at": "2026-06-26T06:31:53.240Z",
+  "total_written": 0,
+  "total_skipped_dup": 0,
+  "total_tokens": 0,
+  "budget_exceeded": false,
+  "sources": [
+    {
+      "source": "阮一峰的网络日志",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Hacker News",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0,
+      "error": "network error fetching https://news.ycombinator.com/rss"
+    }
+  ],
+  "failures": []
+}

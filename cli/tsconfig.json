@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "paths": {
+      "@daily-news/shared": ["../shared/src/index.ts"],
+      "@daily-news/shared/*": ["../shared/src/*"],
+      "@daily-news/crawler": ["../crawler/src/index.ts"],
+      "@daily-news/crawler/*": ["../crawler/src/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "../shared" }, { "path": "../crawler" }]
+}

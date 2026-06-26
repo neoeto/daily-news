@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# env / secrets (never commit)
+.env
+.env.*
+!.env.example
+
+# editor / os
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db
+
+# pagefind index is regenerated each build
+public/pagefind/
+
+# agent runtime / tooling (not application code)
+.omo/
+.opencode/
