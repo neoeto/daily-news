@@ -50,14 +50,15 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_TRANSLATE_MODEL: ${{ secrets.LLM_TRANSLATE_MODEL }}
         run: |
-          echo "base_url: ${LLM_BASE_URL}"
-          echo "model: ${LLM_TRANSLATE_MODEL:-glm-4.5} (default if empty)"
+          echo "=== curl test ==="
           curl -s -w "\nHTTP %{http_code}\n" \
             "${LLM_BASE_URL}/chat/completions" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${LLM_API_KEY}" \
-            -d "{\"model\":\"${LLM_TRANSLATE_MODEL:-glm-4.5}\",\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}" \
-            | head -20
+            -d "{\"model\":\"${LLM_TRANSLATE_MODEL:-glm-4.5}\",\"thinking\":{\"type\":\"disabled\"},\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}" \
+            | head -5
+          echo "=== node diagnostic ==="
+          node --import tsx scripts/diag-llm.ts
 
       - name: run crawler
         run: pnpm crawl
