@@ -1,11 +1,11 @@
 {
   "date": "2026-06-26",
-  "started_at": "2026-06-26T12:59:17.012Z",
-  "finished_at": "2026-06-26T12:59:37.160Z",
-  "total_written": 0,
-  "total_skipped_dup": 3,
-  "total_tokens": 0,
-  "budget_exceeded": false,
+  "started_at": "2026-06-26T15:49:25.499Z",
+  "finished_at": "2026-06-26T16:31:19.082Z",
+  "total_written": 30,
+  "total_skipped_dup": 5,
+  "total_tokens": 514657,
+  "budget_exceeded": true,
   "sources": [
     {
       "source": "阮一峰的网络日志",
@@ -14,15 +14,22 @@
       "translated": 0
     },
     {
-      "source": "Hacker News",
+      "source": "Julia Evans",
+      "items_fetched": 20,
+      "items_written": 10,
+      "translated": 10
+    },
+    {
+      "source": "Martin Fowler",
       "items_fetched": 30,
-      "items_written": 1,
-      "translated": 1
-    }
-  ],
-  "failures": []
-      "items_written": 1,
-      "translated": 1
+      "items_written": 10,
+      "translated": 10
+    },
+    {
+      "source": "Dan Luu",
+      "items_fetched": 128,
+      "items_written": 10,
+      "translated": 10
     }
   ],
   "failures": []

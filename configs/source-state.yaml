@@ -1,6 +1,17 @@
 阮一峰的网络日志:
-  etag: '"1237c-655232e5a2255-gzip"'
-  last_modified: Fri, 26 Jun 2026 07:37:30 GMT
-  last_fetched: 2026-06-26T13:07:31.958Z
+  etag: '"1237c-6552672e50d33-gzip"'
+  last_modified: Fri, 26 Jun 2026 11:31:24 GMT
+  last_fetched: 2026-06-26T15:49:25.666Z
 Hacker News:
   last_fetched: 2026-06-26T13:26:49.378Z
+Julia Evans:
+  etag: '"f4adf4f91f850bbd59836f40756f7ab6-ssl-df"'
+  last_fetched: 2026-06-26T15:49:25.718Z
+Martin Fowler:
+  etag: '"27f87-6545e8073ddc0"'
+  last_modified: Tue, 16 Jun 2026 12:58:39 GMT
+  last_fetched: 2026-06-26T15:53:04.270Z
+Dan Luu:
+  etag: W/"6a27c6d9-5fc9c8"
+  last_modified: Tue, 09 Jun 2026 07:55:05 GMT
+  last_fetched: 2026-06-26T15:57:15.013Z
