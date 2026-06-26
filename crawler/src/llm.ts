@@ -1,4 +1,3 @@
-import OpenAI from 'openai';
 import type { LlmConfig } from '@daily-news/shared';
 
 export interface ChatMessage {
@@ -18,26 +17,19 @@ export interface LlmGateway {
 }
 
 export function createLlmGateway(config: LlmConfig): LlmGateway {
-  const client = new OpenAI({
-    baseURL: config.llm.base_url,
-    apiKey: config.llm.api_key,
-    timeout: config.llm.request.timeout,
-    maxRetries: 0,
-  });
+  const baseURL = config.llm.base_url;
+  const apiKey = config.llm.api_key;
   const maxTokens = config.llm.guardrails.max_tokens_per_run;
   const disableThinking = config.llm.request.disable_thinking;
+  const timeoutMs = config.llm.request.timeout;
   const maxRetries = config.llm.request.max_retries;
   let used = 0;
-
-  type ChatParams = OpenAI.ChatCompletionCreateParamsStreaming & {
-    thinking?: { type: string };
-  };
 
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
   return {
     get available() {
-      return config.llm.api_key.length > 0 && config.llm.api_key !== 'mock';
+      return apiKey.length > 0 && apiKey !== 'mock';
     },
     get budgetExceeded() {
       return used >= maxTokens;
@@ -46,29 +38,45 @@ export function createLlmGateway(config: LlmConfig): LlmGateway {
       return used;
     },
     async chat(model, temperature, messages) {
+      // Bypass openai SDK — its X-Stainless-* headers trigger DeepSeek WAF
+      // to drop the connection ("Premature close"). Raw fetch works reliably.
+      const body = JSON.stringify({
+        model,
+        temperature,
+        messages,
+        ...(disableThinking ? { thinking: { type: 'disabled' } } : {}),
+      });
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      };
+
       let lastError: unknown;
       for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
         try {
-          const params: ChatParams = {
-            model,
-            temperature,
-            messages: messages as OpenAI.ChatCompletionMessageParam[],
-            stream: true,
-            stream_options: { include_usage: true },
+          const res = await fetch(`${baseURL}/chat/completions`, {
+            method: 'POST',
+            headers,
+            body,
+            signal: controller.signal,
+          });
+          clearTimeout(timer);
+          if (!res.ok) {
+            const errText = await res.text().catch(() => '');
+            throw new Error(`HTTP ${res.status}: ${errText.slice(0, 200)}`);
+          }
+          const data = (await res.json()) as {
+            choices?: { message?: { content?: string } }[];
+            usage?: { total_tokens?: number };
           };
-          if (disableThinking) {
-            params.thinking = { type: 'disabled' };
-          }
-          const stream = await client.chat.completions.create(params);
-          let content = '';
-          let tokens = 0;
-          for await (const chunk of stream) {
-            content += chunk.choices[0]?.delta?.content ?? '';
-            if (chunk.usage) tokens = chunk.usage.total_tokens ?? 0;
-          }
+          const content = data.choices?.[0]?.message?.content ?? '';
+          const tokens = data.usage?.total_tokens ?? 0;
           used += tokens;
           return { content, tokens };
         } catch (err) {
+          clearTimeout(timer);
           lastError = err;
           if (attempt < maxRetries) {
             await sleep(Math.min(2000 * 2 ** attempt, 30_000));
