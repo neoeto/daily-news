@@ -1,7 +1,5 @@
 /**
- * Diagnostic: test LLM endpoint with short AND long messages.
- * The crawler sends 500-word article chunks — previous tests used 10-word
- * messages and all passed. Need to test with realistic input size.
+ * Diagnostic: compare raw fetch vs openai SDK on short AND long messages.
  */
 const baseURL = process.env.LLM_BASE_URL ?? '';
 const apiKey = process.env.LLM_API_KEY ?? '';
@@ -12,8 +10,7 @@ const headers: Record<string, string> = {
   Authorization: `Bearer ${apiKey}`,
 };
 
-const SHORT_MSG = 'Translate to Chinese: Hello world, this is a test.';
-
+const SHORT_MSG = 'Translate to Chinese: Hello world.';
 const LONG_MSG =
   'Translate the following text to Chinese. ' +
   'Software engineering is the systematic application of engineering approaches to the development of software. ' +
@@ -34,45 +31,64 @@ const LONG_MSG =
   'The role often requires strong analytical thinking, problem-solving skills, and the ability to work effectively in teams. ' +
   'Communication skills are equally important, as engineers must explain technical concepts to non-technical stakeholders.';
 
-function makeBody(msg: string, stream: boolean) {
-  return JSON.stringify({
-    model,
-    temperature: 0.3,
-    messages: [{ role: 'user', content: msg }],
-    thinking: { type: 'disabled' },
-    stream,
-  });
-}
-
-async function timedFetch(label: string, msg: string, stream: boolean) {
-  console.log(`\n--- ${label} ---`);
+async function testRawFetch(label: string, msg: string) {
   const t0 = Date.now();
   try {
-    const res = await fetch(url, { method: 'POST', headers, body: makeBody(msg, stream) });
-    if (stream) {
-      const reader = res.body?.getReader();
-      if (!reader) throw new Error('no response body');
-      let chunks = 0;
-      let totalChars = 0;
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        chunks++;
-        totalChars += value.length;
-      }
-      console.log(
-        `  status: ${res.status}, chunks: ${chunks}, bytes: ${totalChars}, time: ${Date.now() - t0}ms`,
-      );
-    } else {
-      const text = await res.text();
-      console.log(
-        `  status: ${res.status}, body: ${text.length} bytes, time: ${Date.now() - t0}ms`,
-      );
-    }
-    console.log('  RESULT: pass');
+    const body = JSON.stringify({
+      model,
+      temperature: 0.3,
+      messages: [{ role: 'user', content: msg }],
+      thinking: { type: 'disabled' },
+    });
+    const res = await fetch(url, { method: 'POST', headers, body });
+    const text = await res.text();
+    console.log(`  ${label}: pass (${text.length} bytes, ${Date.now() - t0}ms)`);
   } catch (err) {
     console.log(
-      `  RESULT: FAIL - ${err instanceof Error ? err.message : err} (time: ${Date.now() - t0}ms)`,
+      `  ${label}: FAIL - ${err instanceof Error ? err.message : err} (${Date.now() - t0}ms)`,
+    );
+  }
+}
+
+async function testSdkNonStream(label: string, msg: string) {
+  const t0 = Date.now();
+  try {
+    const { default: OpenAI } = await import('openai');
+    const client = new OpenAI({ baseURL, apiKey, maxRetries: 0, timeout: 60_000 });
+    const res = await client.chat.completions.create({
+      model,
+      temperature: 0.3,
+      messages: [{ role: 'user', content: msg }],
+    });
+    const content = res.choices[0]?.message?.content ?? '';
+    console.log(`  ${label}: pass (${content.length} chars, ${Date.now() - t0}ms)`);
+  } catch (err) {
+    console.log(
+      `  ${label}: FAIL - ${err instanceof Error ? err.message : err} (${Date.now() - t0}ms)`,
+    );
+  }
+}
+
+async function testSdkStream(label: string, msg: string) {
+  const t0 = Date.now();
+  try {
+    const { default: OpenAI } = await import('openai');
+    const client = new OpenAI({ baseURL, apiKey, maxRetries: 0, timeout: 60_000 });
+    const stream = await client.chat.completions.create({
+      model,
+      temperature: 0.3,
+      messages: [{ role: 'user', content: msg }],
+      stream: true,
+      stream_options: { include_usage: true },
+    });
+    let content = '';
+    for await (const chunk of stream) {
+      content += chunk.choices[0]?.delta?.content ?? '';
+    }
+    console.log(`  ${label}: pass (${content.length} chars, ${Date.now() - t0}ms)`);
+  } catch (err) {
+    console.log(
+      `  ${label}: FAIL - ${err instanceof Error ? err.message : err} (${Date.now() - t0}ms)`,
     );
   }
 }
@@ -81,13 +97,17 @@ async function main() {
   console.log(`endpoint: ${url}`);
   console.log(`model: ${model}`);
   console.log(`node: ${process.version}`);
-  console.log(`short msg: ${SHORT_MSG.length} chars`);
-  console.log(`long msg: ${LONG_MSG.length} chars`);
+  console.log(`short: ${SHORT_MSG.length} chars, long: ${LONG_MSG.length} chars\n`);
 
-  await timedFetch('Test 1: short non-streaming', SHORT_MSG, false);
-  await timedFetch('Test 2: short streaming', SHORT_MSG, true);
-  await timedFetch('Test 3: long non-streaming', LONG_MSG, false);
-  await timedFetch('Test 4: long streaming', LONG_MSG, true);
+  console.log('--- raw fetch ---');
+  await testRawFetch('short', SHORT_MSG);
+  await testRawFetch('long', LONG_MSG);
+
+  console.log('\n--- openai SDK ---');
+  await testSdkNonStream('short non-stream', SHORT_MSG);
+  await testSdkNonStream('long non-stream', LONG_MSG);
+  await testSdkStream('short stream', SHORT_MSG);
+  await testSdkStream('long stream', LONG_MSG);
 
   console.log('\n--- Done ---');
 }

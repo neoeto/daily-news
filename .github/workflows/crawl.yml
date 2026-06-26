@@ -58,7 +58,7 @@ jobs:
             -d "{\"model\":\"${LLM_TRANSLATE_MODEL:-glm-4.5}\",\"thinking\":{\"type\":\"disabled\"},\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}" \
             | head -5
           echo "=== node diagnostic ==="
-          node --import tsx scripts/diag-llm.ts
+          node --import tsx crawler/src/diag-llm.ts
 
       - name: run crawler
         run: pnpm crawl
