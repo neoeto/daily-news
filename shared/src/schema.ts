@@ -98,6 +98,8 @@ export const llmConfigSchema = z.object({
     request: z.object({
       timeout: z.number().default(60_000),
       max_retries: z.number().default(3),
+      /** Disable reasoning/thinking mode (DeepSeek V4 etc.) — saves tokens & avoids timeouts on long translations. */
+      disable_thinking: z.boolean().default(false),
     }),
     translate: z.object({
       model: z.string(),

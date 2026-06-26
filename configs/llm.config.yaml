@@ -4,6 +4,7 @@ llm:
   request:
     timeout: 60000
     max_retries: 3
+    disable_thinking: true
   translate:
     model: ${LLM_TRANSLATE_MODEL:-glm-4.5}
     temperature: 0.3
