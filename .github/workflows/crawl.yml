@@ -18,6 +18,8 @@ jobs:
     env:
       LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+      LLM_TRANSLATE_MODEL: ${{ secrets.LLM_TRANSLATE_MODEL }}
+      LLM_TAG_MODEL: ${{ secrets.LLM_TAG_MODEL }}
     steps:
       - uses: actions/checkout@v4
 

@@ -5,10 +5,10 @@ llm:
     timeout: 60000
     max_retries: 3
   translate:
-    model: glm-4.5
+    model: ${LLM_TRANSLATE_MODEL:-glm-4.5}
     temperature: 0.3
   tag:
-    model: glm-4.5-flash
+    model: ${LLM_TAG_MODEL:-glm-4.5-flash}
     temperature: 0.2
     max_tags: 5
   guardrails:

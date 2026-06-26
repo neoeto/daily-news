@@ -20,9 +20,15 @@ import {
 
 const CONFIG_DIR = path.resolve(process.cwd(), 'configs');
 
-/** Replace ${VAR} placeholders in a raw string with process.env[VAR]. */
-function substituteEnv(raw: string): string {
-  return raw.replace(/\$\{(\w+)\}/g, (_match, name: string) => process.env[name] ?? '');
+/** Replace ${VAR} or ${VAR:-default} placeholders in a raw string with process.env[VAR]. */
+export function substituteEnv(raw: string): string {
+  return raw.replace(
+    /\$\{(\w+)(?::-(.*?))?\}/g,
+    (_match, name: string, def?: string) => {
+      const val = process.env[name];
+      return val && val.length > 0 ? val : (def ?? '');
+    },
+  );
 }
 
 async function readYaml(file: string): Promise<string> {
