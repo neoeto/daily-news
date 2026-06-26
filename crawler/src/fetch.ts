@@ -2,7 +2,7 @@
  * HTTP fetch wrapper: custom UA, timeout, retry with exponential backoff,
  * redirect following. Built on Node 22 global fetch.
  */
-import { ProxyAgent, setGlobalDispatcher } from 'undici';
+import { Agent, ProxyAgent, setGlobalDispatcher } from 'undici';
 import type { SourceStateEntry } from '@daily-news/shared';
 
 // Node's global fetch (undici) ignores http_proxy/https_proxy env vars.
@@ -14,6 +14,17 @@ const proxyUrl =
   process.env.HTTP_PROXY;
 if (proxyUrl) {
   setGlobalDispatcher(new ProxyAgent(proxyUrl));
+} else {
+  // On GitHub Actions (no proxy): disable keep-alive to avoid Node.js security
+  // fix false "Premature close" (nodejs/node#63989), and force IPv4 to avoid
+  // Actions runner IPv6 timeout (actions/runner-images#12210).
+  setGlobalDispatcher(
+    new Agent({
+      keepAliveTimeout: 1,
+      keepAliveMaxTimeout: 1,
+      connect: { autoSelectFamily: false },
+    }),
+  );
 }
 
 const USER_AGENT =
