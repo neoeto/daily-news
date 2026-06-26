@@ -86,7 +86,8 @@ async function main(): Promise<void> {
         let truncated = false;
         let title = item.title;
 
-        if (!bodyHtml) {
+        const feedTextLen = bodyHtml.replace(/<[^>]+>/g, '').trim().length;
+        if (feedTextLen < 200) {
           const art = await fetchUrl(item.url);
           if (!art.ok || !art.body) {
             failures.push({ url: item.url, stage: 'fetch', error: `HTTP ${art.status}` });

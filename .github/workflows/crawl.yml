@@ -23,6 +23,19 @@ jobs:
       OUTPUT_BRANCH: news
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: switch to output branch (merge main code changes)
+        run: |
+          git config user.name "daily-news-bot"
+          git config user.email "bot@users.noreply.github.com"
+          if git show-ref --verify --quiet "refs/remotes/origin/${OUTPUT_BRANCH}"; then
+            git checkout -B "${OUTPUT_BRANCH}" "origin/${OUTPUT_BRANCH}"
+            git merge "origin/main" --no-edit
+          else
+            git checkout -b "${OUTPUT_BRANCH}"
+          fi
 
       - uses: pnpm/action-setup@v4
 
@@ -53,12 +66,10 @@ jobs:
 
       - name: commit & push outputs
         run: |
-          git config user.name "daily-news-bot"
-          git config user.email "bot@users.noreply.github.com"
           git add news configs runs
           if git diff --cached --quiet; then
             echo "no changes to commit"
           else
             git commit -m "chore(news): daily crawl $(date -u +%Y-%m-%d)"
-            git push --force origin "HEAD:${OUTPUT_BRANCH}"
+            git push origin "${OUTPUT_BRANCH}"
           fi

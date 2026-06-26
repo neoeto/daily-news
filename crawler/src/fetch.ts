@@ -2,7 +2,19 @@
  * HTTP fetch wrapper: custom UA, timeout, retry with exponential backoff,
  * redirect following. Built on Node 22 global fetch.
  */
+import { ProxyAgent, setGlobalDispatcher } from 'undici';
 import type { SourceStateEntry } from '@daily-news/shared';
+
+// Node's global fetch (undici) ignores http_proxy/https_proxy env vars.
+// Route through ProxyAgent when a proxy is configured (local dev behind GFW).
+const proxyUrl =
+  process.env.https_proxy ||
+  process.env.HTTPS_PROXY ||
+  process.env.http_proxy ||
+  process.env.HTTP_PROXY;
+if (proxyUrl) {
+  setGlobalDispatcher(new ProxyAgent(proxyUrl));
+}
 
 const USER_AGENT =
   'Mozilla/5.0 (compatible; daily-news-crawler/0.1; +https://github.com/daily-news)';
