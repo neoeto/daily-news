@@ -16,15 +16,17 @@ const { Content } = await render(entry);
 const fm = entry.data;
 ---
 
-<Base title={fm.title} description={fm.title}>
-  <article>
-    <h1>{fm.title}</h1>
-    <div class="post-meta">
-      <a href={fm.url} rel="noopener noreferrer">{fm.source}</a>
+<Base title={fm.title} description={fm.title} variant="read">
+  <article class="article">
+    <h1 class="article-title">{fm.title}</h1>
+    <div class="article-meta">
+      <span>
+        来源 <a class="source" href={fm.url} rel="noopener noreferrer">{fm.source} ↗</a>
+      </span>
       {' · '}
       <time>{fm.date.toISOString().slice(0, 10)}</time>
-      {fm.translated && <span> · 译自 {fm.original_lang ?? '原文'}</span>}
-      {fm.truncated && <span> · [正文可能截断]</span>}
+      {fm.translated && <span class="badge translate">译自 {fm.original_lang ?? '原文'}</span>}
+      {fm.truncated && <span class="badge truncate">正文可能截断</span>}
     </div>
     {fm.tags.length > 0 && (
       <div class="tags">
@@ -33,7 +35,11 @@ const fm = entry.data;
         ))}
       </div>
     )}
-    <div class="article-body" data-pagefind-body onclick="event.target.tagName==='IMG'&&!event.target.naturalWidth&&(event.target.style.outline='2px solid #ccc')">
+    <div
+      class="article-body"
+      data-pagefind-body
+      onclick="if(event.target.tagName==='IMG'&&!event.target.naturalWidth)event.target.classList.add('broken')"
+    >
       <Content />
     </div>
   </article>

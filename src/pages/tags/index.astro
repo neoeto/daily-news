@@ -13,14 +13,20 @@ const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <Base title="标签 · 每日资讯">
-  <h1>标签</h1>
+  <section class="section-head">
+    <h1>标签</h1>
+    <p class="lede">按主题浏览{tags.length > 0 ? ` · 共 ${tags.length} 个` : ''}。</p>
+  </section>
+
   {tags.length === 0 ? (
-    <p>暂无标签(待 LLM 打标启用后出现)。</p>
+    <p style="color: var(--muted); padding: 2rem 0;">
+      暂无标签 —— 待 LLM 打标启用后,这里会出现主题分类。
+    </p>
   ) : (
     <div class="tag-cloud">
       {tags.map(([name, count]) => (
         <a class="tag" href={`/tags/${encodeURIComponent(name)}/`}>
-          {name} <span style="color:var(--muted)">({count})</span>
+          {name} <span class="count">{count}</span>
         </a>
       ))}
     </div>

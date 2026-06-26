@@ -14,30 +14,37 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { page } = Astro.props as { page: Props['page'] };
 ---
 
-<Base title="每日资讯">
-  {page.data.map((entry) => (
-    <article class="post">
-      <h2>
-        <a href={`/news/${entry.id}/`}>{entry.data.title}</a>
-      </h2>
-      <div class="post-meta">
-        <a href={entry.data.url} rel="noopener">{entry.data.source}</a>
-        {' · '}
-        <time>{entry.data.date.toISOString().slice(0, 10)}</time>
-        {entry.data.translated && <span> · 译</span>}
-        {entry.data.truncated && <span> · [截断]</span>}
-      </div>
-      {entry.data.tags.length > 0 && (
-        <div class="tags">
-          {entry.data.tags.map((t) => (
-            <a class="tag" href={`/tags/${encodeURIComponent(t)}/`}>{t}</a>
-          ))}
-        </div>
-      )}
-    </article>
-  ))}
+<Base>
+  <section class="section-head">
+    <h1>最新</h1>
+    <p class="lede">个人追踪的中英文科技资讯,每日自动抓取、翻译与分类。</p>
+  </section>
 
-  <nav class="pagination">
+  <div class="post-list">
+    {page.data.map((entry) => (
+      <article class="post">
+        <h2 class="post-title">
+          <a href={`/news/${entry.id}/`}>{entry.data.title}</a>
+        </h2>
+        <div class="post-meta">
+          <a href={entry.data.url} rel="noopener noreferrer">{entry.data.source}</a>
+          {' · '}
+          <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+          {entry.data.translated && <span class="badge translate">译</span>}
+          {entry.data.truncated && <span class="badge truncate">截断</span>}
+        </div>
+        {entry.data.tags.length > 0 && (
+          <div class="tags">
+            {entry.data.tags.map((t) => (
+              <a class="tag" href={`/tags/${encodeURIComponent(t)}/`}>{t}</a>
+            ))}
+          </div>
+        )}
+      </article>
+    ))}
+  </div>
+
+  <nav class="pager">
     {page.url.prev && <a href={page.url.prev}>← 上一页</a>}
     <span>{page.currentPage} / {page.lastPage}</span>
     {page.url.next && <a href={page.url.next}>下一页 →</a>}

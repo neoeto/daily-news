@@ -23,21 +23,27 @@ const { page, tag } = Astro.props as { page: Props['page']; tag: string };
 ---
 
 <Base title={`#${tag} · 每日资讯`}>
-  <h1>#{tag}</h1>
-  {page.data.map((entry) => (
-    <article class="post">
-      <h2>
-        <a href={`/news/${entry.id}/`}>{entry.data.title}</a>
-      </h2>
-      <div class="post-meta">
-        <a href={entry.data.url} rel="noopener">{entry.data.source}</a>
-        {' · '}
-        <time>{entry.data.date.toISOString().slice(0, 10)}</time>
-      </div>
-    </article>
-  ))}
+  <section class="section-head">
+    <h1>#{tag}</h1>
+    <p class="lede">{page.total} 篇文章</p>
+  </section>
 
-  <nav class="pagination">
+  <div class="post-list">
+    {page.data.map((entry) => (
+      <article class="post">
+        <h2 class="post-title">
+          <a href={`/news/${entry.id}/`}>{entry.data.title}</a>
+        </h2>
+        <div class="post-meta">
+          <a href={entry.data.url} rel="noopener noreferrer">{entry.data.source}</a>
+          {' · '}
+          <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <nav class="pager">
     {page.url.prev && <a href={page.url.prev}>← 上一页</a>}
     <span>{page.currentPage} / {page.lastPage}</span>
     {page.url.next && <a href={page.url.next}>下一页 →</a>}

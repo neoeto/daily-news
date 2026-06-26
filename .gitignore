@@ -27,3 +27,7 @@ public/pagefind/
 # agent runtime / tooling (not application code)
 .omo/
 .opencode/
+
+# design QA artifacts (browser screenshots, playwright output)
+.playwright-mcp/
+/*.png
