@@ -21,6 +21,7 @@ jobs:
       LLM_TRANSLATE_MODEL: ${{ secrets.LLM_TRANSLATE_MODEL }}
       LLM_TAG_MODEL: ${{ secrets.LLM_TAG_MODEL }}
       OUTPUT_BRANCH: news
+      NODE_OPTIONS: --dns-result-order=ipv4first
     steps:
       - uses: actions/checkout@v4
         with:
