@@ -1,15 +1,15 @@
 {
   "date": "2026-06-26",
-  "started_at": "2026-06-26T09:52:53.403Z",
-  "finished_at": "2026-06-26T09:53:35.989Z",
+  "started_at": "2026-06-26T10:14:34.434Z",
+  "finished_at": "2026-06-26T10:15:17.281Z",
   "total_written": 0,
-  "total_skipped_dup": 3,
+  "total_skipped_dup": 0,
   "total_tokens": 0,
   "budget_exceeded": false,
   "sources": [
     {
       "source": "阮一峰的网络日志",
-      "items_fetched": 3,
+      "items_fetched": 0,
       "items_written": 0,
       "translated": 0
     },
@@ -52,17 +52,17 @@
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
     },
     {
+      "url": "https://blog.matthewbrunelle.com/my-steam-machine-is-a-50ft-hdmi-cable/",
+      "stage": "write",
+      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
+    },
+    {
       "url": "https://expression.fire.org/p/the-papers-please-era-of-the-internet",
       "stage": "write",
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
     },
     {
       "url": "https://gchandbook.org/",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
-      "url": "https://blog.matthewbrunelle.com/my-steam-machine-is-a-50ft-hdmi-cable/",
       "stage": "write",
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
     },
@@ -97,11 +97,6 @@
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
     },
     {
-      "url": "https://aditya.patadia.org/p/ai-and-cloud-costs",
-      "stage": "write",
-      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
-    },
-    {
       "url": "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
       "stage": "write",
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
@@ -112,12 +107,17 @@
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
     },
     {
+      "url": "https://worksinprogress.co/issue/microbubbles/",
+      "stage": "write",
+      "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
+    },
+    {
       "url": "https://calpaterson.com/bank-python.html",
       "stage": "write",
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
     },
     {
-      "url": "https://www.reuters.com/world/asia-pacific/apple-raises-prices-macbooks-ipads-memory-costs-skyrocket-2026-06-25/",
+      "url": "https://twitter.com/mfts0/status/2070080422482977095",
       "stage": "write",
       "error": "Invalid response body while trying to fetch https://api.deepseek.com/chat/completions: Premature close"
     }
