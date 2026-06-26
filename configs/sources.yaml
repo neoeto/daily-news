@@ -9,8 +9,32 @@ sources:
     type: rss
     lang: zh
 
-  - name: Hacker News
-    url: https://news.ycombinator.com/rss
+  - name: Julia Evans
+    url: https://jvns.ca/atom.xml
     type: rss
     lang: en
-    max_items: 20
+
+  - name: Martin Fowler
+    url: https://martinfowler.com/feed.atom
+    type: rss
+    lang: en
+
+  - name: Dan Luu
+    url: https://danluu.com/atom.xml
+    type: rss
+    lang: en
+
+  - name: Sebastian Raschka
+    url: https://sebastianraschka.com/rss_feed.xml
+    type: rss
+    lang: en
+
+  - name: OpenAI Blog
+    url: https://openai.com/blog/rss.xml
+    type: rss
+    lang: en
+
+  - name: Hugging Face Blog
+    url: https://huggingface.co/blog/feed.xml
+    type: rss
+    lang: en
