@@ -28,7 +28,7 @@ export function createLlmGateway(config: LlmConfig): LlmGateway {
   const disableThinking = config.llm.request.disable_thinking;
   let used = 0;
 
-  type ChatParams = OpenAI.ChatCompletionCreateParamsNonStreaming & {
+  type ChatParams = OpenAI.ChatCompletionCreateParamsStreaming & {
     thinking?: { type: string };
   };
 
@@ -47,14 +47,21 @@ export function createLlmGateway(config: LlmConfig): LlmGateway {
         model,
         temperature,
         messages: messages as OpenAI.ChatCompletionMessageParam[],
+        stream: true,
+        stream_options: { include_usage: true },
       };
       if (disableThinking) {
         params.thinking = { type: 'disabled' };
       }
-      const res = await client.chat.completions.create(params);
-      const tokens = res.usage?.total_tokens ?? 0;
+      const stream = await client.chat.completions.create(params);
+      let content = '';
+      let tokens = 0;
+      for await (const chunk of stream) {
+        content += chunk.choices[0]?.delta?.content ?? '';
+        if (chunk.usage) tokens = chunk.usage.total_tokens ?? 0;
+      }
       used += tokens;
-      return { content: res.choices[0]?.message?.content ?? '', tokens };
+      return { content, tokens };
     },
   };
 }
