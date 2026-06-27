@@ -2,7 +2,7 @@ name: daily-crawl
 
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 17 * * 0,2,4,6'
   workflow_dispatch:
 
 concurrency:
@@ -43,22 +43,6 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-
-      - name: test LLM endpoint
-        env:
-          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_TRANSLATE_MODEL: ${{ secrets.LLM_TRANSLATE_MODEL }}
-        run: |
-          echo "=== curl test ==="
-          curl -s -w "\nHTTP %{http_code}\n" \
-            "${LLM_BASE_URL}/chat/completions" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${LLM_API_KEY}" \
-            -d "{\"model\":\"${LLM_TRANSLATE_MODEL:-glm-4.5}\",\"thinking\":{\"type\":\"disabled\"},\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}" \
-            | head -5
-          echo "=== node diagnostic ==="
-          node --import tsx crawler/src/diag-llm.ts
 
       - name: run crawler
         run: pnpm crawl
