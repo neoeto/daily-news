@@ -1,0 +1,60 @@
+---
+/**
+ * StarBtn — reusable bookmark button for the reading-state feature.
+ *
+ * Renders a `<button class="star-btn">` with `aria-pressed` reflecting
+ * starred state. The accompanying `<script>` (bundled once by Astro even
+ * if the component is used many times per page) wires up click → toggleStar
+ * and subscribes to the store so list/detail instances stay in sync.
+ *
+ * Visual styling lives in src/styles/global.css (`.article-meta .star-btn`
+ * and `.post-list > .post[data-starred]`).
+ */
+interface Props {
+  urlHash: string;
+  /** 'list' = compact (post-meta), 'detail' = alongside article-meta. */
+  variant?: 'list' | 'detail';
+}
+const { urlHash, variant = 'list' } = Astro.props;
+const label = '收藏';
+---
+
+<button
+  class:list={['star-btn', `star-btn-${variant}`]}
+  type="button"
+  aria-pressed="false"
+  aria-label={label}
+  data-url-hash={urlHash}
+>
+  <span aria-hidden="true" class="star-icon">☆</span>
+  <span class="sr-only">{label}</span>
+</button>
+
+<script>
+  import { subscribe, getState, toggleStar } from '../scripts/reading-state';
+
+  function initStarBtn(btn: HTMLButtonElement): void {
+    const urlHash = btn.dataset.urlHash;
+    if (!urlHash) return;
+    const icon = btn.querySelector('.star-icon');
+    if (!icon) return;
+
+    function update(): void {
+      const isStarred = urlHash in getState().starred;
+      btn.setAttribute('aria-pressed', isStarred ? 'true' : 'false');
+      icon.textContent = isStarred ? '★' : '☆';
+    }
+
+    btn.addEventListener('click', () => toggleStar(urlHash));
+    update();
+    subscribe(update);
+  }
+
+  function initAll(): void {
+    document.querySelectorAll('.star-btn').forEach((el) => {
+      if (el instanceof HTMLButtonElement) initStarBtn(el);
+    });
+  }
+
+  initAll();
+</script>

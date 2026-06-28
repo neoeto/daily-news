@@ -2,6 +2,7 @@
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
+import StarBtn from '../../../components/StarBtn.astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const all = await getCollection('news');
@@ -30,7 +31,7 @@ const { page, tag } = Astro.props as { page: Props['page']; tag: string };
 
   <div class="post-list">
     {page.data.map((entry) => (
-      <article class="post">
+      <article class="post" data-url-hash={entry.data.url_hash}>
         <h2 class="post-title">
           <a href={`/news/${entry.id}/`}>{entry.data.title}</a>
         </h2>
@@ -38,6 +39,7 @@ const { page, tag } = Astro.props as { page: Props['page']; tag: string };
           <a href={entry.data.url} rel="noopener noreferrer">{entry.data.source}</a>
           {' · '}
           <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+          <StarBtn urlHash={entry.data.url_hash} variant="list" />
         </div>
       </article>
     ))}

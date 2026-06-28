@@ -196,6 +196,18 @@ pnpm build     # 完整构建 + Pagefind 搜索索引
 pnpm preview   # 预览构建产物
 ```
 
+### 阅读状态(已读 / 收藏 / 阅读进度)
+
+站点在浏览器端用 `localStorage` 记录每位读者的阅读状态——**无账号、无服务端、无跨设备同步**。
+
+- **已读**:在文章详情页滚到底部(IntersectionObserver + 500ms 防抖)自动标记。列表页已读文章标题降亮(`--faint`)。
+- **收藏**:列表页 `.post-meta` 与详情页 `.article-meta` 各有 ☆/★ 按钮,共享同一份状态,跨标签页实时联动。`/bookmarks/` 页可按「全部 / 稍后读 / 已读」过滤,默认按收藏时间倒序。
+- **阅读进度**:详情页 `scrollY` 在 `visibilitychange` + `pagehide` 时保存(绝不用 `beforeunload`,iOS Safari 不触发且破坏 bfcache);重进该文时等图片 `decode()` 完成再恢复滚动位置。
+- **首页最后更新时间**:首页 `section-head` 显示 crawler 最近一次运行的 `finished_at`(扫 `runs/*.json` 取 `max`),build time 静态生成、零 client JS、强制 `Asia/Shanghai` 时区。
+- **降级**:`localStorage` 不可用时(Safari 私密模式、配额超限)切换到内存 `Map`,会话内功能正常、刷新后丢失,不抛错。换设备数据不迁移——`/bookmarks/` 页提供「导出 JSON」按钮供手动备份。
+
+数据 schema 与迁移函数在 `shared/src/reading-state.ts`(crawler 与 Astro 共享),浏览器端 store 在 `src/scripts/reading-state.ts`。设计细节见 `openspec/changes/add-reading-state/`。
+
 ### 部署到 Cloudflare Pages
 
 1. **推送仓库到 GitHub**

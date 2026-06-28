@@ -9,7 +9,7 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --import tsx --test crawler/test/*.test.ts cli/test/*.test.ts",
+    "test": "node --import tsx --test crawler/test/*.test.ts cli/test/*.test.ts shared/test/*.test.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "crawl": "tsx crawler/src/index.ts",

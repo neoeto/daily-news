@@ -1,7 +1,9 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection } from 'astro:content';
+import { runSummarySchema, type RunSummary } from '@daily-news/shared';
 import Base from '../layouts/Base.astro';
+import StarBtn from '../components/StarBtn.astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const all = (await getCollection('news')).sort(
@@ -12,17 +14,54 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { page } = Astro.props as { page: Props['page'] };
+
+// Build-time: load all crawler run summaries and find the latest finished_at.
+// Source of truth is runs/*.json (one per run, keyed by date). Displayed as
+// static text in the section-head; no client fetch, no runtime computation.
+// When runs/ is empty (fresh repo, crawler never ran), lastUpdated is null and
+// the conditional template below skips rendering the element entirely.
+const runModules = import.meta.glob<{ default: unknown }>('../../runs/*.json', {
+  eager: true,
+});
+const validRuns: RunSummary[] = [];
+for (const mod of Object.values(runModules)) {
+  const parsed = runSummarySchema.safeParse(mod.default);
+  if (parsed.success) validRuns.push(parsed.data);
+}
+const lastUpdated: Date | null =
+  validRuns.length === 0
+    ? null
+    : new Date(Math.max(...validRuns.map((r) => Date.parse(r.finished_at))));
+const lastUpdatedFormatted =
+  lastUpdated === null
+    ? ''
+    : new Intl.DateTimeFormat('zh-CN', {
+        timeZone: 'Asia/Shanghai',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+        .format(lastUpdated)
+        .replace(/\//g, '-');
 ---
 
 <Base>
   <section class="section-head">
     <h1>最新</h1>
     <p class="lede">个人追踪的中英文科技资讯,每日自动抓取、翻译与分类。</p>
+    {lastUpdated && (
+      <p class="last-updated">
+        最后更新 <time datetime={lastUpdated.toISOString()}>{lastUpdatedFormatted} (UTC+8)</time>
+      </p>
+    )}
   </section>
 
   <div class="post-list">
     {page.data.map((entry) => (
-      <article class="post">
+      <article class="post" data-url-hash={entry.data.url_hash}>
         <h2 class="post-title">
           <a href={`/news/${entry.id}/`}>{entry.data.title}</a>
         </h2>
@@ -32,6 +71,7 @@ const { page } = Astro.props as { page: Props['page'] };
           <time>{entry.data.date.toISOString().slice(0, 10)}</time>
           {entry.data.translated && <span class="badge translate">译</span>}
           {entry.data.truncated && <span class="badge truncate">截断</span>}
+          <StarBtn urlHash={entry.data.url_hash} variant="list" />
         </div>
         {entry.data.tags.length > 0 && (
           <div class="tags">
