@@ -1,0 +1,105 @@
+{
+  "date": "2026-06-28",
+  "started_at": "2026-06-28T18:03:21.258Z",
+  "finished_at": "2026-06-28T18:25:31.100Z",
+  "total_written": 20,
+  "total_skipped_dup": 23,
+  "total_tokens": 444213,
+  "budget_exceeded": false,
+  "sources": [
+    {
+      "source": "阮一峰的网络日志",
+      "items_fetched": 3,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Julia Evans",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Martin Fowler",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Dan Luu",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Sebastian Raschka",
+      "items_fetched": 130,
+      "items_written": 10,
+      "translated": 10
+    },
+    {
+      "source": "OpenAI Blog",
+      "items_fetched": 1022,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Hugging Face Blog",
+      "items_fetched": 811,
+      "items_written": 10,
+      "translated": 10
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://openai.com/index/previewing-gpt-5-6-sol",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/how-agents-are-transforming-work",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/gpt-5-immunology-mystery",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/omio",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/patch-the-planet",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/daybreak-securing-the-world",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/codex-maxxing-long-running-work",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    }
+  ]
+}
