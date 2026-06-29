@@ -1,0 +1,357 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+// Build-time: enumerate all articles into a manifest baked into the page as
+// inline JSON. The client script joins this manifest with localStorage to
+// render the user's starred items. No client fetch — manifest travels in the
+// initial HTML response.
+const all = (await getCollection('news')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const manifest = all.map((entry) => ({
+  url_hash: entry.data.url_hash,
+  slug: entry.id,
+  title: entry.data.title,
+  source: entry.data.source,
+  date: entry.data.date.getTime(),
+  url: `/news/${entry.id}/`,
+  tags: entry.data.tags,
+}));
+// Escape `<` so article titles containing `</script>` can't break out of the
+// JSON script tag. JSON parser decodes \u003c back to <.
+const manifestJson = JSON.stringify(manifest).replace(/</g, '\\u003c');
+---
+
+<Base title="收藏 · 每日资讯" description="我收藏的文章">
+  <section class="section-head">
+    <h1>收藏</h1>
+    <p class="lede">基于浏览器本地存储,仅此设备可见。</p>
+  </section>
+
+  <div class="bm-toolbar">
+    <div class="bm-tabs" role="tablist" aria-label="收藏过滤">
+      <button class="bm-tab" role="tab" aria-selected="true" data-filter="all" type="button">
+        全部
+      </button>
+      <button class="bm-tab" role="tab" aria-selected="false" data-filter="later" type="button">
+        稍后读
+      </button>
+      <button class="bm-tab" role="tab" aria-selected="false" data-filter="read" type="button">
+        已读
+      </button>
+    </div>
+    <div class="bm-actions">
+      <button type="button" id="bm-export">导出 JSON</button>
+      <button type="button" id="bm-clear-orphans" hidden>清除失效收藏</button>
+    </div>
+  </div>
+
+  <ul id="bm-list" class="bm-list"></ul>
+  <p id="bm-empty" class="bm-empty" hidden></p>
+
+  <script type="application/json" id="dn-posts" set:html={manifestJson} />
+</Base>
+
+<script>
+  import { subscribe, getState, clearOrphans, toggleStar, unmarkRead } from '../scripts/reading-state';
+
+  type ManifestEntry = {
+    url_hash: string;
+    slug: string;
+    title: string;
+    source: string;
+    date: number;
+    url: string;
+    tags: string[];
+  };
+  type Filter = 'all' | 'later' | 'read';
+
+  const manifestScript = document.getElementById('dn-posts');
+  const manifestText = manifestScript?.textContent ?? '[]';
+  const manifest: ManifestEntry[] = JSON.parse(manifestText) as ManifestEntry[];
+  const manifestMap = new Map(manifest.map((m) => [m.url_hash, m]));
+  const manifestHashes = new Set(manifest.map((m) => m.url_hash));
+
+  const listEl = document.getElementById('bm-list');
+  const emptyEl = document.getElementById('bm-empty');
+  const exportBtn = document.getElementById('bm-export');
+  const clearOrphansBtn = document.getElementById('bm-clear-orphans');
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.bm-tab'));
+  let currentFilter: Filter = 'all';
+
+  function escapeHtml(s: string): string {
+    return s.replace(/[&<>"']/g, (c) => {
+      switch (c) {
+        case '&':
+          return '&amp;';
+        case '<':
+          return '&lt;';
+        case '>':
+          return '&gt;';
+        case '"':
+          return '&quot;';
+        case "'":
+          return '&#39;';
+        default:
+          return c;
+      }
+    });
+  }
+
+  function formatDate(epoch: number): string {
+    return new Intl.DateTimeFormat('zh-CN', {
+      timeZone: 'Asia/Shanghai',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+      .format(new Date(epoch))
+      .replace(/\//g, '-');
+  }
+
+  function setFilter(next: Filter): void {
+    currentFilter = next;
+    tabs.forEach((t) => {
+      const filter = t.dataset.filter as Filter | undefined;
+      t.setAttribute('aria-selected', filter === next ? 'true' : 'false');
+    });
+    render();
+  }
+
+  function render(): void {
+    if (!listEl || !emptyEl || !clearOrphansBtn) return;
+    const state = getState();
+    const readSet = new Set(Object.keys(state.read));
+
+    type VisibleItem =
+      | { orphan: true; hash: string; starredAt: number }
+      | { orphan: false; hash: string; starredAt: number; meta: ManifestEntry; isRead: boolean };
+
+    const visible: VisibleItem[] = [];
+    let orphanCount = 0;
+
+    for (const [hash, info] of Object.entries(state.starred)) {
+      const meta = manifestMap.get(hash);
+      if (!meta) {
+        orphanCount += 1;
+        if (currentFilter === 'all') {
+          visible.push({ orphan: true, hash, starredAt: info.at });
+        }
+        continue;
+      }
+      const isRead = readSet.has(hash);
+      if (currentFilter === 'later' && isRead) continue;
+      if (currentFilter === 'read' && !isRead) continue;
+      visible.push({ orphan: false, hash, starredAt: info.at, meta, isRead });
+    }
+
+    visible.sort((a, b) => b.starredAt - a.starredAt);
+
+    if (visible.length === 0) {
+      listEl.innerHTML = '';
+      emptyEl.hidden = false;
+      const messages: Record<Filter, string> = {
+        all: '还没有收藏,去<a href="/">首页</a>看看。',
+        later: '没有未读的收藏。',
+        read: '没有已读的收藏。',
+      };
+      emptyEl.innerHTML = messages[currentFilter];
+    } else {
+      emptyEl.hidden = true;
+      listEl.innerHTML = visible
+        .map((v) => {
+          if (v.orphan) {
+            return `<li class="bm-item bm-orphan"><div class="bm-title">[已删除] 此文章已不可访问</div><button type="button" class="bm-remove" data-hash="${v.hash}">移除此条</button></li>`;
+          }
+          const readBadge = v.isRead ? ' · <span class="bm-badge">已读</span>' : '';
+          return `<li class="bm-item${v.isRead ? ' bm-read' : ''}"><div class="bm-title"><a href="${v.meta.url}">${escapeHtml(v.meta.title)}</a></div><div class="bm-meta"><a href="${v.meta.url}" rel="noopener noreferrer">${escapeHtml(v.meta.source)}</a> · <time>${formatDate(v.meta.date)}</time>${readBadge}</div></li>`;
+        })
+        .join('');
+    }
+
+    clearOrphansBtn.hidden = orphanCount === 0;
+    if (orphanCount > 0) {
+      clearOrphansBtn.textContent = `清除 ${orphanCount} 条失效收藏`;
+    }
+  }
+
+  // Tab clicks
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const filter = tab.dataset.filter as Filter | undefined;
+      if (filter) setFilter(filter);
+    });
+  });
+
+  // Arrow-key navigation between tabs (a11y)
+  const tabOrder: Filter[] = ['all', 'later', 'read'];
+  document.querySelector('.bm-tabs')?.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    const idx = tabOrder.indexOf(currentFilter);
+    const nextIdx =
+      e.key === 'ArrowRight' ? (idx + 1) % tabOrder.length : (idx - 1 + tabOrder.length) % tabOrder.length;
+    setFilter(tabOrder[nextIdx] as Filter);
+  });
+
+  // Per-item orphan removal (event delegation on list)
+  listEl?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.classList.contains('bm-remove')) return;
+    const hash = target.dataset.hash;
+    if (!hash) return;
+    const state = getState();
+    if (hash in state.starred) toggleStar(hash);
+    if (hash in state.read) unmarkRead(hash);
+  });
+
+  // Bulk clear orphans
+  clearOrphansBtn?.addEventListener('click', () => {
+    clearOrphans(manifestHashes);
+  });
+
+  // Export JSON
+  exportBtn?.addEventListener('click', () => {
+    const data = JSON.stringify(getState(), null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'daily-news-state.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Initial render + subscribe for cross-tab / cross-page sync
+  render();
+  subscribe(render);
+</script>
+
+<style>
+  .bm-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 1.5rem 0 0.5rem;
+    flex-wrap: wrap;
+  }
+  .bm-tabs {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .bm-tab {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.3rem 0.9rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition:
+      background 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease;
+  }
+  .bm-tab:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .bm-tab[aria-selected='true'] {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .bm-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .bm-actions button {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.3rem 0.9rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition:
+      color 0.18s ease,
+      border-color 0.18s ease;
+  }
+  .bm-actions button:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .bm-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .bm-list > .bm-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .bm-list > .bm-item:last-child {
+    border-bottom: none;
+  }
+  .bm-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    line-height: 1.4;
+    margin-bottom: 0.3rem;
+  }
+  .bm-title a {
+    color: var(--fg);
+  }
+  .bm-title a:hover {
+    color: var(--accent);
+  }
+  .bm-item.bm-read .bm-title a {
+    color: var(--faint);
+  }
+  .bm-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .bm-meta a {
+    color: var(--muted);
+  }
+  .bm-badge {
+    color: var(--faint);
+  }
+  .bm-orphan {
+    opacity: 0.7;
+  }
+  .bm-orphan .bm-title {
+    color: var(--faint);
+    font-style: italic;
+  }
+  .bm-remove {
+    background: none;
+    border: none;
+    color: var(--faint);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0;
+    margin-top: 0.3rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .bm-remove:hover {
+    color: var(--accent);
+  }
+  .bm-empty {
+    padding: 3rem 0;
+    color: var(--muted);
+    text-align: center;
+  }
+  .bm-empty a {
+    color: var(--accent);
+  }
+</style>

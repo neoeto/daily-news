@@ -18,9 +18,15 @@ const dateLabel = `${now.getFullYear()} 年 ${now.getMonth() + 1} 月 ${now.getD
 ---
 
 <!doctype html>
-<html lang="zh">
+<html lang="zh" class="no-js">
   <head>
     <meta charset="utf-8" />
+    <script is:inline>
+      document.documentElement.className = document.documentElement.className.replace(
+        /\bno-js\b/,
+        'js',
+      );
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -34,6 +40,7 @@ const dateLabel = `${now.getFullYear()} 年 ${now.getMonth() + 1} 月 ${now.getD
         <nav class="masthead-nav">
           <a href="/">首页</a>
           <a href="/tags">标签</a>
+          <a href="/bookmarks">收藏</a>
           <a href="/rss.xml">RSS</a>
         </nav>
       </div>
@@ -51,5 +58,29 @@ const dateLabel = `${now.getFullYear()} 年 ${now.getMonth() + 1} 月 ${now.getD
         </p>
       </div>
     </footer>
+
+    <script>
+      // Reading-state bootstrap: reflects persistent state onto every article
+      // card on the page by setting data-read / data-starred attributes. The
+      // CSS in global.css turns these into visual treatments (grayed-out title,
+      // ★ prefix). Runs once on load, then re-applies on every store change so
+      // list/detail instances stay in sync.
+      import { subscribe, getState } from '../scripts/reading-state';
+
+      function applyReadingState(): void {
+        const state = getState();
+        document.querySelectorAll<HTMLElement>('[data-url-hash]').forEach((el) => {
+          const hash = el.dataset.urlHash;
+          if (!hash) return;
+          if (hash in state.read) el.setAttribute('data-read', 'true');
+          else el.removeAttribute('data-read');
+          if (hash in state.starred) el.setAttribute('data-starred', 'true');
+          else el.removeAttribute('data-starred');
+        });
+      }
+
+      applyReadingState();
+      subscribe(applyReadingState);
+    </script>
   </body>
 </html>

@@ -1,4 +1,4 @@
 packages:
-  - "shared"
-  - "crawler"
-  - "cli"
+  - 'shared'
+  - 'crawler'
+  - 'cli'

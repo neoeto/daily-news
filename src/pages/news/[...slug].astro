@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import StarBtn from '../../components/StarBtn.astro';
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('news');
@@ -17,7 +18,7 @@ const fm = entry.data;
 ---
 
 <Base title={fm.title} description={fm.title} variant="read">
-  <article class="article">
+  <article class="article" data-url-hash={fm.url_hash}>
     <h1 class="article-title">{fm.title}</h1>
     <div class="article-meta">
       <span>
@@ -27,6 +28,7 @@ const fm = entry.data;
       <time>{fm.date.toISOString().slice(0, 10)}</time>
       {fm.translated && <span class="badge translate">译自 {fm.original_lang ?? '原文'}</span>}
       {fm.truncated && <span class="badge truncate">正文可能截断</span>}
+      <StarBtn urlHash={fm.url_hash} variant="detail" />
     </div>
     {fm.tags.length > 0 && (
       <div class="tags">
@@ -43,4 +45,22 @@ const fm = entry.data;
       <Content />
     </div>
   </article>
+  <div data-read-sentinel aria-hidden="true" style="height:1px"></div>
 </Base>
+
+<script>
+  import {
+    trackArticleCompletion,
+    saveScrollOnLeave,
+    restoreScrollIfAny,
+  } from '../../scripts/track-read';
+
+  const article = document.querySelector<HTMLElement>('article.article');
+  const sentinel = document.querySelector<HTMLElement>('[data-read-sentinel]');
+  const urlHash = article?.dataset.urlHash;
+  if (urlHash && sentinel) {
+    trackArticleCompletion({ urlHash, sentinel });
+    saveScrollOnLeave(urlHash);
+    void restoreScrollIfAny(urlHash);
+  }
+</script>
