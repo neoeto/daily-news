@@ -1,0 +1,42 @@
+{
+  "date": "2026-07-05",
+  "started_at": "2026-07-05T17:59:54.319Z",
+  "finished_at": "2026-07-05T18:37:57.238Z",
+  "total_written": 28,
+  "total_skipped_dup": 44,
+  "total_tokens": 540234,
+  "budget_exceeded": true,
+  "sources": [
+    {
+      "source": "阮一峰的网络日志",
+      "items_fetched": 3,
+      "items_written": 1,
+      "translated": 0
+    },
+    {
+      "source": "Julia Evans",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Martin Fowler",
+      "items_fetched": 30,
+      "items_written": 10,
+      "translated": 10
+    },
+    {
+      "source": "Dan Luu",
+      "items_fetched": 128,
+      "items_written": 10,
+      "translated": 10
+    },
+    {
+      "source": "Sebastian Raschka",
+      "items_fetched": 130,
+      "items_written": 7,
+      "translated": 7
+    }
+  ],
+  "failures": []
+}
