@@ -1,0 +1,105 @@
+{
+  "date": "2026-07-14",
+  "started_at": "2026-07-14T17:59:14.650Z",
+  "finished_at": "2026-07-14T18:21:21.848Z",
+  "total_written": 22,
+  "total_skipped_dup": 93,
+  "total_tokens": 428018,
+  "budget_exceeded": false,
+  "sources": [
+    {
+      "source": "阮一峰的网络日志",
+      "items_fetched": 3,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Julia Evans",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Martin Fowler",
+      "items_fetched": 30,
+      "items_written": 2,
+      "translated": 2
+    },
+    {
+      "source": "Dan Luu",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Sebastian Raschka",
+      "items_fetched": 134,
+      "items_written": 10,
+      "translated": 10
+    },
+    {
+      "source": "OpenAI Blog",
+      "items_fetched": 1041,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Hugging Face Blog",
+      "items_fetched": 823,
+      "items_written": 10,
+      "translated": 10
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://openai.com/index/managing-ai-investments-in-agentic-era",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/deutsche-telekom",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/academy/getting-started",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/bio-bug-bounty",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/gpt-5-6",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/government-national-security-partnerships",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    }
+  ]
+}
