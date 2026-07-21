@@ -1,0 +1,105 @@
+{
+  "date": "2026-07-21",
+  "started_at": "2026-07-21T18:14:22.791Z",
+  "finished_at": "2026-07-21T18:37:17.612Z",
+  "total_written": 21,
+  "total_skipped_dup": 121,
+  "total_tokens": 401142,
+  "budget_exceeded": false,
+  "sources": [
+    {
+      "source": "阮一峰的网络日志",
+      "items_fetched": 3,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Julia Evans",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Martin Fowler",
+      "items_fetched": 30,
+      "items_written": 1,
+      "translated": 1
+    },
+    {
+      "source": "Dan Luu",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Sebastian Raschka",
+      "items_fetched": 136,
+      "items_written": 10,
+      "translated": 10
+    },
+    {
+      "source": "OpenAI Blog",
+      "items_fetched": 1041,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Hugging Face Blog",
+      "items_fetched": 830,
+      "items_written": 10,
+      "translated": 10
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://openai.com/index/introducing-chatgpt-small-business-program",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/safety-alignment-long-horizon-models",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/a-scorecard-for-the-ai-age",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/cars24",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/unlocking-self-improvement-gpt-red",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/managing-ai-investments-in-agentic-era",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    }
+  ]
+}
