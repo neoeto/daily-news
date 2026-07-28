@@ -1,0 +1,265 @@
+{
+  "date": "2026-07-28",
+  "started_at": "2026-07-28T18:11:49.613Z",
+  "finished_at": "2026-07-28T18:20:58.569Z",
+  "total_written": 0,
+  "total_skipped_dup": 180,
+  "total_tokens": 0,
+  "budget_exceeded": false,
+  "sources": [
+    {
+      "source": "阮一峰的网络日志",
+      "items_fetched": 3,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Julia Evans",
+      "items_fetched": 0,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Martin Fowler",
+      "items_fetched": 30,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Dan Luu",
+      "items_fetched": 128,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Sebastian Raschka",
+      "items_fetched": 139,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "OpenAI Blog",
+      "items_fetched": 1052,
+      "items_written": 0,
+      "translated": 0
+    },
+    {
+      "source": "Hugging Face Blog",
+      "items_fetched": 832,
+      "items_written": 0,
+      "translated": 0
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://martinfowler.com/articles/orchestrator-tax.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://martinfowler.com/rachels-ramblings/intro.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/exercise-7/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/fsyncgate/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/input-lag/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/bad-decisions/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/android-updates/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/ui-compatibility/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/filesystem-errors/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/keyboard-latency/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/branch-prediction/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://danluu.com/sattolo/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2026/kimi-k3-architecture-notes.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2026/notable-open-weight-models-this-week.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2026/reasoning-model-listing-6-5-correction.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2023/pytorch-memory-optimization.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2023/falcon-finetuning.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2023/llm-mixed-precision-copy.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2023/llm-finetuning-lora.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2023/llm-finetuning-llama-adapter.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://lightning.ai/pages/blog/gradient-accumulation/",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://sebastianraschka.com/blog/2023/keeping-up-with-ai.html",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://openai.com/index/scientific-computing-agentic-ai",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/health-in-chatgpt",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/how-news-organizations-are-using-ai",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/advancing-the-next-era-of-national-science",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/introducing-openai-presence",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/ntt-data",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/introducing-chatgpt-small-business-program",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://openai.com/index/hugging-face-model-evaluation-security-incident",
+      "stage": "fetch",
+      "error": "HTTP 403"
+    },
+    {
+      "url": "https://huggingface.co/blog/allenai/olmoearth-infrastructure",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/LiquidAI/lfm2-5-encoders",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/nvidia/cosmos-h-dreams",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/nunchaku-diffusers",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/delta-weight-sync",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/agent-glossary",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/allenai/olmoearth-v1-1",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/ettin-reranker",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/PaddlePaddle/paddleocr-transformers",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    },
+    {
+      "url": "https://huggingface.co/blog/ibm-granite/granite-embedding-multilingual-r2",
+      "stage": "write",
+      "error": "HTTP 402: {\"error\":{\"message\":\"Insufficient Balance\",\"type\":\"unknown_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
+    }
+  ]
+}
